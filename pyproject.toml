@@ -1,7 +1,7 @@
 [project]
 name = "pomodora-clock"
 version = "0.1.0"
-description = "Add your description here"
+description = "A simple pomodora clock"
 readme = "README.md"
 requires-python = ">=3.10"
 dependencies = []
