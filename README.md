@@ -4,7 +4,7 @@
 <br />
 <div align="center">
   <a href="https://www.rawpixel.com/image/12053935/image-background-dog-face">
-    <img src="images/doggie.jpg" alt="Logo" width="300" height="300">
+    <img src="images\actual\HOME.png" alt="Logo" width="300" height="300">
   </a>
 
   <h3 align="center">Pomodora Clock</h3>
@@ -60,11 +60,15 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-[![Product Name Screen Shot][product-screenshot]](https://example.com)
+<div align="center">
+
+![Product Name Screen Shot][product-screenshot]
+
+</div>
+
 
 I created this Pomodora-Clock to help me start working by creating small time commitments which helped me overcome the mountain that is a 2 hours study session.
 
-Use the `BLANK_README.md` to get started.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -129,43 +133,15 @@ _For more examples, please refer to the [Documentation](https://example.com)_
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 
-
-<!-- ROADMAP -->
-## Roadmap
-
-- [x] Add Changelog
-- [x] Add back to top links
-- [ ] Add Additional Templates w/ Examples
-- [ ] Add "components" document to easily copy & paste sections of the readme
-- [ ] Multi-language Support
-    - [ ] Chinese
-    - [ ] Spanish
-
-See the [open issues](https://github.com/othneildrew/Best-README-Template/issues) for a full list of proposed features (and known issues).
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-
-
 <!-- CONTRIBUTING -->
 ## Contributing
 
-Contributions are what make the open source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
-
-If you have a suggestion that would make this better, please fork the repo and create a pull request. You can also simply open an issue with the tag "enhancement".
-Don't forget to give the project a star! Thanks again!
-
-1. Fork the Project
-2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the Branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
+NONE :)
 
 ### Top contributors:
-##### LATER
-<!-- <a href="https://github.com/othneildrew/Best-README-Template/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=othneildrew/Best-README-Template" alt="contrib.rocks image" />
-</a> -->
+<a href="https://github.com/Ryan-Goosen/Pomodora-Clock/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=Ryan-Goosen/Pomodora-Clock" alt="contrib.rocks image" />
+</a>
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -204,5 +180,5 @@ Use this space to list resources you find helpful and would like to give credit 
 [license-url]: https://github.com/Ryan-Goosen/Pomodora-Clock/blob/main/LICENSE
 <!-- [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
 [linkedin-url]: https://linkedin.com/in/othneildrew -->
-[product-screenshot]: images/screenshot.png
+[product-screenshot]: images\demo\STUDYING.png
 [Python]: https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54
