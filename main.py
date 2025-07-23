@@ -9,6 +9,8 @@ TITLE = " " + "Pomodora-Clock"
 def main():
 
     root = tkb.Window(title=TITLE)
+    root.maxsize(350, 400)
+    root.minsize(350, 400)
     app = PomodoraClock(root)
 
     root.mainloop()
