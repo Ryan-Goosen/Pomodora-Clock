@@ -25,7 +25,7 @@ class Data:
             'num_sessions': app.get('num_sessions')
         }
 
-    def _write_file(self, input_study_time, input_rest_time, input_study_extension, input_rest_extension, input_num_sessions):
+    def write_file(self, input_study_time, input_rest_time, input_study_extension, input_rest_extension, input_num_sessions):
         self.config = ConfigParser()
         if os.path.exists(self.file_path):
             self.config.read(self.file_path)
@@ -34,11 +34,11 @@ class Data:
             self.config['app'] = {}
         app = self.config['app']
 
-        app['study_time'] = input_study_time
-        app['rest_time'] = input_rest_time
-        app['study_extension'] = input_study_extension
-        app['rest_extension'] = input_rest_extension
-        app['num_sessions'] = input_num_sessions
+        app['study_time'] = str(input_study_time)
+        app['rest_time'] = str(input_rest_time)
+        app['study_extension'] = str(input_study_extension)
+        app['rest_extension'] = str(input_rest_extension)
+        app['num_sessions'] = str(input_num_sessions)
 
         # Write updated config back to file
         with open(self.file_path, 'w') as configfile:

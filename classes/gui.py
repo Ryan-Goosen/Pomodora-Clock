@@ -11,7 +11,9 @@ class PomodoraClock:
 
     def __init__(self, root):
         self.root = root
-        self.data =  Data().get_data()
+        self.data_init = Data()
+        self.data = 0
+        
         self.start_time = 0
 
         self.canvas = tkb.Canvas(width=350, height=400, highlightthickness=0)
@@ -41,6 +43,8 @@ class PomodoraClock:
 
 ##############  PAGES ##############
     def home_page(self):
+        self.data =  self.data_init.get_data()
+
         self.start_time = int(self.data.get("study_time")) * 60
         self._hide_spinbox()
         self.canvas.itemconfig(self.text_id, text="CLICK : START")
@@ -180,7 +184,7 @@ class PomodoraClock:
             messagebox.showwarning("Invalid input", "Please only use numerical values in all spinboxes.")
             return None  # or you could raise or handle it differently
 
-        Data._write_file(
+        self.data_init.write_file(
             input_study_time = study_time,
             input_rest_time = rest_time,
             input_study_extension = study_extension,
