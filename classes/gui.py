@@ -16,29 +16,38 @@ class PomodoraClock:
 
     def __init__(self, root):
         self.root = root
+
+        # LOADING IN CONFIG DATA
         self.data_init = Data()
         self.data = self.data_init.get_data()
 
-
-
+        # STATE
+        self.current_state = None
 
         # MAKING PYCHARM HAPPY
-        self.start_time = int(self.data.get("study_time",5)) * 60
+        self.timer = int(self.data.get("study_time",5)) * 60
+        self.sessions = int(self.data.get("num_sessions",1))
+
+
         self.time_left = None
         self.time_text = None
         self.timer_countdown = None
 
+
+        self.time_text = None
+
+        # SETUP
         self.canvas = tkb.Canvas(width=350, height=400, highlightthickness=0)
         self.image_id = self.canvas.create_image(175,200, image="")
         self.text_id = self.canvas.create_text(175, 160, text="CLICK : START", fill="white", font=DEFAULT_HEADER_FONT)
         self.canvas.pack()
 
+        self.time_left = self.canvas.create_text(180, 80)
+        self.time_text = self.canvas.create_text(180, 150)
+
         # CONFIGURATION ITEMS #
         self._create_spinbox()
         self._create_labels()
-
-        # LABELS
-
 
         # BUTTONS #
         self.left_btn = tkb.Button(bootstyle="success-outline")
@@ -89,15 +98,18 @@ class PomodoraClock:
         self.right_btn.place(x=235, y=355)
 
     def start_page(self):
+        self.sessions -= 1
+        self.timer = int(self.data.get("study_time", 5)) * 60
+        self.current_state = "active"
         start_page_image = tkb.PhotoImage(file=Path('images/actual/STUDYING.png'))
         self.canvas.itemconfig(self.image_id, image=start_page_image)
         self.canvas.image = start_page_image
 
-        self.canvas.itemconfig(self.text_id, text="FOCUSED:", fill="Silver", font=DEFAULT_HEADER_FONT)
+        self.canvas.itemconfig(self.text_id, text="FOCUSED:", fill="White", font=DEFAULT_HEADER_FONT)
         self.canvas.coords(self.text_id, 175, 25)
 
-        self.time_left = self.canvas.create_text(180, 80, text="Time Left: " , fill="white", font=("Times New Roman", 20, "bold"))
-        self.time_text = self.canvas.create_text(180, 150 , fill="white", font=("Times New Roman", 30, "bold"))
+        self.canvas.itemconfig(self.time_left, text="Time Left:", font=DEFAULT_HEADER_FONT, fill="White")
+        self.canvas.itemconfig(self.time_text, font=DEFAULT_HEADER_FONT, fill="White")
 
         self.center_btn.config(text="PAUSE", width=15, command=self.pause_page, bootstyle="dark-outline")
         self.center_btn.place(x=110,y=355)
@@ -108,6 +120,7 @@ class PomodoraClock:
         self._start_timer()
 
     def pause_page(self):
+
         pause_page_image = tkb.PhotoImage(file=Path('images/actual/PAUSED.png'))
         self.canvas.itemconfig(self.image_id, image=pause_page_image)
         self.canvas.image = pause_page_image
@@ -122,24 +135,57 @@ class PomodoraClock:
 
         self._stop_timer()
 
+    def resting_page(self):
+        self.timer = int(self.data.get("rest_time",2)) * 60
+        self.current_state = "rest"
+
+        resting_page_image = tkb.PhotoImage(file=Path('images/actual/RESTING.png'))
+        self.canvas.itemconfig(self.image_id, image=resting_page_image)
+        self.canvas.image = resting_page_image
+
+        self.canvas.itemconfig(self.text_id, text="RESTING:", fill="White", font=DEFAULT_HEADER_FONT)
+        self.canvas.coords(self.text_id, 175, 25)
+
+        self.canvas.itemconfig(self.time_left, text="Time Left:", font=DEFAULT_HEADER_FONT, fill="White")
+        self.canvas.itemconfig(self.time_text, font=DEFAULT_HEADER_FONT, fill="White")
+
+        self.center_btn.config(text="PAUSE", width=15, command=self.pause_page, bootstyle="dark-outline")
+        self.center_btn.place(x=110, y=355)
+
+        self.left_btn.place_forget()
+        self.right_btn.place_forget()
+
+        self._start_timer()
+
+
     def _start_timer(self):
         self._update_time()
 
     def _update_time(self):
-        if self.start_time > 0:
-            self.start_time -= 1
-            minutes, seconds = divmod(self.start_time,60)
+        if self.timer > 0:
+            self.timer -= 1
+            minutes, seconds = divmod(self.timer,60)
             self.canvas.itemconfig(self.time_text, text= str(minutes) + " min   " + str(seconds) + " sec")
             self.timer_countdown = self.root.after(1000, self._update_time)
         else:
-            exit(1)
+            self._stop_timer()
+            if self.sessions == 0:
+                exit(1)
+            else:
+                if self.current_state == "active":
+                    self.resting_page()
+                else:
+                    self.start_page()
 
     def _stop_timer(self):
-        self.root.after_cancel(self.timer_countdown)
-        self.timer_countdown = None
+        if self.timer_countdown is not None:
+            try:
+                self.root.after_cancel(self.timer_countdown)
+            except ValueError:
+                pass
+            self.timer_countdown = None
 
-
-# TIME TO STOP AND TIME TO STUDY ALERTS #
+    # TIME TO STOP AND TIME TO STUDY ALERTS #
 
 ############## Label Things ###############
     def _create_labels(self):
