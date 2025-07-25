@@ -107,18 +107,13 @@ These instructions cover both the running of the packaged version and the raw co
 
 <!-- USAGE EXAMPLES -->
 ## Usage
-
-Use this space to show useful examples of how a project can be used. Additional screenshots, code examples and demos work well in this space. You may also link to more resources.
-
-_For more examples, please refer to the [Documentation](https://example.com)_
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
+1. Run the program
+2. Click on start once you are ready.
 
 <!-- CONTRIBUTING -->
 ## Contributing
 
-NONE :)
+Not needed.
 
 ### Top contributors:
 <a href="https://github.com/Ryan-Goosen/Pomodora-Clock/graphs/contributors">
