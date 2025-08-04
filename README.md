@@ -90,9 +90,10 @@ These instructions cover both the running of the packaged version and the raw co
 ### Prerequisites
 - Python
 - ttkbootstrap
+- pygame
 
 ### Running from code:
-1. Open your terminal inside of the folder
+1. Open your terminal inside the folder
 2. Running the program:
 
    2.1 `python3 main.py` on **Linux Machines**
@@ -103,12 +104,11 @@ These instructions cover both the running of the packaged version and the raw co
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-
-
 <!-- USAGE EXAMPLES -->
 ## Usage
-1. Run the program
-2. Click on start once you are ready.
+1. Timer tracker
+2. Pomodoro Clock
+3. Stopwatch
 
 <!-- CONTRIBUTING -->
 ## Contributing

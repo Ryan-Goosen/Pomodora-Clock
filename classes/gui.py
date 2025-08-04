@@ -3,6 +3,9 @@ import ttkbootstrap as tkb
 
 from pathlib import Path
 from tkinter import messagebox
+import os
+os.environ["PYGAME_HIDE_SUPPORT_PROMPT"] = "1"
+import pygame
 
 from classes.data import Data
 
@@ -57,9 +60,18 @@ class PomodoraClock:
         # LOADING HOMEPAGE #
         self.home_page()
 
+        # SOUND
+
+        pygame.init()
+        self.sound = pygame.mixer.Sound(Path("sounds/switch-noise.wav"))
+
+
+
 
 ##############  PAGES ##############
     def home_page(self):
+        self.timer = int(Data().get_data().get("study_time", 5)) * 60
+
         self._hide_spinbox()
         self._hide_labels()
         self.canvas.itemconfig(self.text_id, text="CLICK : START", font=DEFAULT_HEADER_FONT)
@@ -99,17 +111,16 @@ class PomodoraClock:
 
     def start_page(self):
         self.sessions -= 1
-        self.timer = int(self.data.get("study_time", 5)) * 60
         self.current_state = "active"
         start_page_image = tkb.PhotoImage(file=Path('images/actual/STUDYING.png'))
         self.canvas.itemconfig(self.image_id, image=start_page_image)
         self.canvas.image = start_page_image
 
-        self.canvas.itemconfig(self.text_id, text="FOCUSED:", fill="White", font=DEFAULT_HEADER_FONT)
+        self.canvas.itemconfig(self.text_id, text="FOCUSED:", fill="White", font=DEFAULT_HEADER_FONT, state="normal")
         self.canvas.coords(self.text_id, 175, 25)
 
-        self.canvas.itemconfig(self.time_left, text="Time Left:", font=DEFAULT_HEADER_FONT, fill="White")
-        self.canvas.itemconfig(self.time_text, font=DEFAULT_HEADER_FONT, fill="White")
+        self.canvas.itemconfig(self.time_left, text="Time Left:", font=DEFAULT_HEADER_FONT, fill="White", state="normal")
+        self.canvas.itemconfig(self.time_text, font=DEFAULT_HEADER_FONT, fill="White", state="normal")
 
         self.center_btn.config(text="PAUSE", width=15, command=self.pause_page, bootstyle="dark-outline")
         self.center_btn.place(x=110,y=355)
@@ -120,7 +131,6 @@ class PomodoraClock:
         self._start_timer()
 
     def pause_page(self):
-
         pause_page_image = tkb.PhotoImage(file=Path('images/actual/PAUSED.png'))
         self.canvas.itemconfig(self.image_id, image=pause_page_image)
         self.canvas.image = pause_page_image
@@ -128,7 +138,7 @@ class PomodoraClock:
         self.canvas.itemconfig(self.text_id, text="PAUSED:", font=PAUSED_HEADER_FONT, fill="White")
         self.canvas.coords(self.text_id, 175, 175)
 
-        self.center_btn.config(text="RESUME", width=15, command=self.start_page, bootstyle="dark-outline")
+        self.center_btn.config(text="RESUME", width=15, command=self._handle_pause, bootstyle="dark-outline")
 
         self.canvas.itemconfigure(self.time_text, state="hidden")
         self.canvas.itemconfigure(self.time_left, state="hidden")
@@ -136,18 +146,17 @@ class PomodoraClock:
         self._stop_timer()
 
     def resting_page(self):
-        self.timer = int(self.data.get("rest_time",2)) * 60
         self.current_state = "rest"
 
         resting_page_image = tkb.PhotoImage(file=Path('images/actual/RESTING.png'))
         self.canvas.itemconfig(self.image_id, image=resting_page_image)
         self.canvas.image = resting_page_image
 
-        self.canvas.itemconfig(self.text_id, text="RESTING:", fill="White", font=DEFAULT_HEADER_FONT)
+        self.canvas.itemconfig(self.text_id, text="RESTING:", fill="White", font=DEFAULT_HEADER_FONT, state="normal")
         self.canvas.coords(self.text_id, 175, 25)
 
-        self.canvas.itemconfig(self.time_left, text="Time Left:", font=DEFAULT_HEADER_FONT, fill="White")
-        self.canvas.itemconfig(self.time_text, font=DEFAULT_HEADER_FONT, fill="White")
+        self.canvas.itemconfig(self.time_left, text="Time Left:", font=DEFAULT_HEADER_FONT, fill="White", state="normal")
+        self.canvas.itemconfig(self.time_text, font=DEFAULT_HEADER_FONT, fill="White", state="normal")
 
         self.center_btn.config(text="PAUSE", width=15, command=self.pause_page, bootstyle="dark-outline")
         self.center_btn.place(x=110, y=355)
@@ -157,6 +166,11 @@ class PomodoraClock:
 
         self._start_timer()
 
+    def _handle_pause(self):
+        if self.current_state == "active":
+            self.start_page()
+        else:
+            self.resting_page()
 
     def _start_timer(self):
         self._update_time()
@@ -166,15 +180,18 @@ class PomodoraClock:
             self.timer -= 1
             minutes, seconds = divmod(self.timer,60)
             self.canvas.itemconfig(self.time_text, text= str(minutes) + " min   " + str(seconds) + " sec")
-            self.timer_countdown = self.root.after(1000, self._update_time)
+            self.timer_countdown = self.root.after(10, self._update_time)
         else:
             self._stop_timer()
+            self.sound.play()
             if self.sessions == 0:
                 exit(1)
             else:
                 if self.current_state == "active":
+                    self.timer = int(Data().get_data().get("rest_time",2)) * 60
                     self.resting_page()
                 else:
+                    self.timer = int(Data().get_data().get("study_time",5)) * 60
                     self.start_page()
 
     def _stop_timer(self):
